@@ -1,8 +1,15 @@
 <script lang="ts">
-	export let type: 'text' | 'password';
-	export let id: string;
-	export let name: string;
-	export let value: string | undefined = undefined;
+	let {
+		type,
+		id,
+		name,
+		value = undefined
+	}: {
+		type: 'text' | 'password';
+		id: string;
+		name: string;
+		value?: string;
+	} = $props();
 </script>
 
 <input {type} {value} {id} {name} />

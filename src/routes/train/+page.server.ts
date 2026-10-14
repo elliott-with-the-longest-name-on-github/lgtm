@@ -1,8 +1,8 @@
-import { MODEL_TRAINING_PASSWORD } from '$env/static/private';
-import { db } from '$lib/db/index.js';
-import { generateAcronym } from '$lib/statistics/utils.js';
+import { MODEL_TRAINING_PASSWORD } from '$app/env/private';
+import { db } from '#lib/db/index.js';
+import { generateAcronym } from '#lib/statistics/utils.js';
 import { error, fail, redirect } from '@sveltejs/kit';
-import classifierJson from '$lib/statistics/classifier.json?raw';
+import classifierJson from '#lib/statistics/classifier.json?raw';
 // @ts-expect-error -- module not typed
 import bayes from 'bayes';
 import type { InsertResult } from 'kysely';
@@ -35,7 +35,7 @@ export async function load({ locals }) {
 export const actions = {
 	train: async ({ request, locals }) => {
 		if (!locals.session.data.authenticated) {
-			throw error(401, 'Unauthorized');
+			error(401, 'Unauthorized');
 		}
 
 		const formData = await request.formData();
@@ -66,7 +66,7 @@ export const actions = {
 					}))
 				)
 				.execute();
-		} catch (e) {
+		} catch {
 			return fail(500);
 		}
 
@@ -76,7 +76,7 @@ export const actions = {
 	},
 	upload: async ({ request, locals }) => {
 		if (!locals.session.data.authenticated) {
-			throw error(401, 'Unauthorized');
+			error(401, 'Unauthorized');
 		}
 
 		const formData = await request.formData();
@@ -119,7 +119,7 @@ export const actions = {
 			);
 		}
 		await Promise.all(insertPromises);
-		throw redirect(303, '/train/success');
+		redirect(303, '/train/success');
 	},
 	authenticate: async ({ request, locals }) => {
 		const formData = await request.formData();

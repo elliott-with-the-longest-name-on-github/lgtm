@@ -1,19 +1,33 @@
 <script lang="ts">
-	export let href: string;
-	export let variant: 'primary' | 'secondary' = 'secondary';
-	export let disabled = false;
+	import type { Snippet } from 'svelte';
 
-	$: primary = variant === 'primary';
-	$: secondary = variant === 'secondary';
+	let {
+		href,
+		variant = 'secondary',
+		disabled = false,
+		children
+	}: {
+		href: string;
+		variant?: 'primary' | 'secondary';
+		disabled?: boolean;
+		children: Snippet;
+	} = $props();
+
+	let primary = $derived(variant === 'primary');
+	let secondary = $derived(variant === 'secondary');
 </script>
 
+<!-- Callers are responsible for passing an href built with resolve() -->
+<!-- eslint-disable svelte/no-navigation-without-resolve -->
 <a
 	data-sveltekit-preload-code="eager"
 	class:primary
 	class:secondary
 	class:disabled
-	href={disabled ? undefined : href}><slot /></a
+	href={disabled ? undefined : href}>{@render children()}</a
 >
+
+<!-- eslint-enable svelte/no-navigation-without-resolve -->
 
 <style>
 	a {

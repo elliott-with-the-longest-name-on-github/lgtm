@@ -12,6 +12,7 @@ declare global {
 			session: Session<SessionData>;
 		}
 		// interface PageData {}
+		// interface PageState {}
 		// interface Platform {}
 	}
 }

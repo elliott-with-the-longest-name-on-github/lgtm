@@ -1,4 +1,4 @@
-import { getAcronym } from '$lib/get-acronym';
+import { getAcronym } from '#lib/get-acronym.js';
 import { redirect } from '@sveltejs/kit';
 
 export async function load({ url }) {
@@ -11,7 +11,7 @@ export async function load({ url }) {
 		const params = new URLSearchParams();
 		params.set('orientation', orientation ?? 'along-y');
 		params.set('id', resolvedId);
-		throw redirect(307, `/?${params}`);
+		redirect(307, `/?${params}`);
 	}
 
 	const acronymArray = [l, g, t, m];

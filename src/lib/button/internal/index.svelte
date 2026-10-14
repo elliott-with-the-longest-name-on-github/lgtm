@@ -1,13 +1,26 @@
 <script lang="ts">
-	export let type: 'button' | 'submit' | 'reset';
-	export let variant: 'primary' | 'secondary' = 'secondary';
-	export let disabled = false;
+	import type { Snippet } from 'svelte';
+	import type { MouseEventHandler } from 'svelte/elements';
 
-	$: primary = variant === 'primary';
-	$: secondary = variant === 'secondary';
+	let {
+		type,
+		variant = 'secondary',
+		disabled = false,
+		onclick,
+		children
+	}: {
+		type: 'button' | 'submit' | 'reset';
+		variant?: 'primary' | 'secondary';
+		disabled?: boolean;
+		onclick?: MouseEventHandler<HTMLButtonElement>;
+		children: Snippet;
+	} = $props();
+
+	let primary = $derived(variant === 'primary');
+	let secondary = $derived(variant === 'secondary');
 </script>
 
-<button on:click class:primary class:secondary {disabled} {type}><slot /></button>
+<button {onclick} class:primary class:secondary {disabled} {type}>{@render children()}</button>
 
 <style>
 	button {

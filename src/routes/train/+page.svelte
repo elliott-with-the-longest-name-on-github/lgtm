@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Button } from '$lib/button';
-	import { TextInput } from '$lib/text-input/index.js';
-	import { Uploader } from '$lib/uploader/index.js';
-	import type { SubmitFunction } from './$types.js';
+	import { Button } from '#lib/button/index.js';
+	import { TextInput } from '#lib/text-input/index.js';
+	import { Uploader } from '#lib/uploader/index.js';
+	import type { PageProps, SubmitFunction } from './$types';
 
-	export let data;
-	export let form;
+	let { data, form }: PageProps = $props();
 
-	let submitting = false;
-	let selected: 'yes' | 'no' | 'sort-of' = 'no';
+	let submitting = $state(false);
+	let selected: 'yes' | 'no' | 'sort-of' = $state('no');
 
 	const handleSubmit: SubmitFunction = async () => {
 		submitting = true;
@@ -21,7 +20,7 @@
 		};
 	};
 
-	$: name = (form?.name as string) ?? '';
+	let name = $derived((form?.name as string) ?? '');
 </script>
 
 <div class="content-wrapper">
@@ -56,7 +55,7 @@
 					<label for="yes">Yes</label>
 				</div>
 				<div class="radio-button">
-					<!-- svelte-ignore a11y-autofocus -->
+					<!-- svelte-ignore a11y_autofocus -->
 					<input bind:group={selected} autofocus type="radio" id="no" name="selection" value="no" />
 					<label for="no">No</label>
 				</div>

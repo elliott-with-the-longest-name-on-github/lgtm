@@ -1,10 +1,10 @@
-import L from '$lib/statistics/dictionaries/l';
-import G from '$lib/statistics/dictionaries/g';
-import T from '$lib/statistics/dictionaries/t';
-import M from '$lib/statistics/dictionaries/m';
+import L from '#lib/statistics/dictionaries/l.js';
+import G from '#lib/statistics/dictionaries/g.js';
+import T from '#lib/statistics/dictionaries/t.js';
+import M from '#lib/statistics/dictionaries/m.js';
 // @ts-expect-error - no types
 import bayes from 'bayes';
-import classifierJson from '$lib/statistics/classifier.json?raw';
+import classifierJson from '#lib/statistics/classifier.json?raw';
 
 export function getRandomElement<T>(array: Array<T>): T {
 	return array[Math.floor(Math.random() * array.length)];
