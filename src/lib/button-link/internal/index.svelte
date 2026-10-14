@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { ResolvedPathname } from '$app/types';
 
 	let {
 		href,
@@ -7,7 +8,7 @@
 		disabled = false,
 		children
 	}: {
-		href: string;
+		href: ResolvedPathname;
 		variant?: 'primary' | 'secondary';
 		disabled?: boolean;
 		children: Snippet;
@@ -17,8 +18,6 @@
 	let secondary = $derived(variant === 'secondary');
 </script>
 
-<!-- Callers are responsible for passing an href built with resolve() -->
-<!-- eslint-disable svelte/no-navigation-without-resolve -->
 <a
 	data-sveltekit-preload-code="eager"
 	class:primary
@@ -26,8 +25,6 @@
 	class:disabled
 	href={disabled ? undefined : href}>{@render children()}</a
 >
-
-<!-- eslint-enable svelte/no-navigation-without-resolve -->
 
 <style>
 	a {
