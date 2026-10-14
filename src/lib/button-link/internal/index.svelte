@@ -1,10 +1,21 @@
 <script lang="ts">
-	export let href: string;
-	export let variant: 'primary' | 'secondary' = 'secondary';
-	export let disabled = false;
+	import type { Snippet } from 'svelte';
+	import type { ResolvedPathname } from '$app/types';
 
-	$: primary = variant === 'primary';
-	$: secondary = variant === 'secondary';
+	let {
+		href,
+		variant = 'secondary',
+		disabled = false,
+		children
+	}: {
+		href: ResolvedPathname;
+		variant?: 'primary' | 'secondary';
+		disabled?: boolean;
+		children: Snippet;
+	} = $props();
+
+	let primary = $derived(variant === 'primary');
+	let secondary = $derived(variant === 'secondary');
 </script>
 
 <a
@@ -12,7 +23,7 @@
 	class:primary
 	class:secondary
 	class:disabled
-	href={disabled ? undefined : href}><slot /></a
+	href={disabled ? undefined : href}>{@render children()}</a
 >
 
 <style>

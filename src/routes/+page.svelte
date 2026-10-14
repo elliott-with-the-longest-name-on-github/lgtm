@@ -1,29 +1,39 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { Button } from '$lib/button';
-	import { ButtonLink } from '$lib/button-link';
+	import { page } from '$app/state';
+	import { Button } from '#lib/button/index.js';
+	import { ButtonLink } from '#lib/button-link/index.js';
 	import { beforeNavigate, afterNavigate } from '$app/navigation';
-	import { Toast } from '$lib/toast/index.js';
-	import { browser } from '$app/environment';
+	import { Toast } from '#lib/toast/index.js';
+	import { browser } from '$app/env';
+	import { resolve } from '$app/paths';
+	import type { PageProps } from './$types';
 
-	export let data;
+	let { data }: PageProps = $props();
 
-	let showCopySuccess = false;
-	let loading = false;
+	let showCopySuccess = $state(false);
+	let loading = $state(false);
 
-	$: currentOrientation = $page.url.searchParams.get('orientation') ?? 'along-y';
-	$: currentId = $page.url.searchParams.get('id');
+	let currentOrientation = $derived(page.url.searchParams.get('orientation') ?? 'along-y');
+	let currentId = $derived(page.url.searchParams.get('id'));
 
 	// navigate here for a new acronym: /?orientation={currentOrientation}
-	$: noAction = `/?${new URLSearchParams({
-		orientation: currentOrientation
-	})}`;
+	let noAction = $derived(
+		resolve(
+			`/?${new URLSearchParams({
+				orientation: currentOrientation
+			})}`
+		)
+	);
 
 	// navigate here for the same acronym but rotated: /?orientation={opposite}&id={currentId}
-	$: rotateAction = `/?${new URLSearchParams({
-		orientation: currentOrientation === 'along-y' ? 'along-x' : 'along-y',
-		...(currentId ? { id: currentId } : undefined)
-	})}`;
+	let rotateAction = $derived(
+		resolve(
+			`/?${new URLSearchParams({
+				orientation: currentOrientation === 'along-y' ? 'along-x' : 'along-y',
+				...(currentId ? { id: currentId } : undefined)
+			})}`
+		)
+	);
 
 	function onClickHighlight(
 		e: MouseEvent & {
@@ -55,16 +65,19 @@
 
 <div class="content-wrapper">
 	<div class="constrain">
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<pre class:center={currentOrientation === 'along-x'}><code on:click={onClickHighlight}
+		<!-- data.lgtm is generated server-side from trusted acronyms -->
+		<!-- eslint-disable svelte/no-at-html-tags -->
+		<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
+		<pre class:center={currentOrientation === 'along-x'}><code onclick={onClickHighlight}
 				>{@html data.lgtm}</code
 			></pre>
+		<!-- eslint-enable svelte/no-at-html-tags -->
 		<div class="buttons">
 			<ButtonLink disabled={loading} href={noAction}>no</ButtonLink>
 			<Button
 				disabled={loading || !browser}
 				type="button"
-				on:click={(e) => {
+				onclick={(e) => {
 					e.preventDefault();
 					copy();
 				}}>yes (copy to clipboard)</Button

@@ -1,18 +1,16 @@
 <script lang="ts">
-	import GoFile from 'svelte-icons/go/GoFile.svelte';
-	import GoCloudUpload from 'svelte-icons/go/GoCloudUpload.svelte';
-	import { browser } from '$app/environment';
+	import { browser } from '$app/env';
 	import { enhance, type SubmitFunction } from '$app/forms';
-	import { Toast } from '$lib/toast';
+	import { Toast } from '#lib/toast/index.js';
 
 	let form: HTMLFormElement;
-	let toastMessage: string | undefined;
-	let timeout: number;
+	let toastMessage: string | undefined = $state();
+	let timeout: ReturnType<typeof setTimeout>;
 
 	function setToast(message: string) {
 		toastMessage = message;
 		clearTimeout(timeout);
-		setTimeout(() => {
+		timeout = setTimeout(() => {
 			toastMessage = undefined;
 		}, 3000);
 	}
@@ -44,7 +42,7 @@
 			name="file"
 			accept=".txt"
 			required
-			on:change={(e) => {
+			onchange={(e) => {
 				const file = e.currentTarget.files?.[0];
 
 				if (file) {
@@ -54,11 +52,21 @@
 		/>
 
 		<div>
-			<GoFile />
+			<!-- Octicons "file" icon -->
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 16" aria-hidden="true">
+				<path
+					d="M6 5H2V4h4v1zM2 8h7V7H2v1zm0 2h7V9H2v1zm0 2h7v-1H2v1zm10-7.5V14c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V2c0-.55.45-1 1-1h7.5L12 4.5zM11 5L8 2H1v12h10V5z"
+				/>
+			</svg>
 		</div>
 
-		<button disabled={browser}>
-			<GoCloudUpload />
+		<button disabled={browser} aria-label="Upload">
+			<!-- Octicons "cloud-upload" icon -->
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true">
+				<path
+					d="M7 9H5l3-3 3 3H9v5H7V9zm5-4c0-.44-.91-3-4.5-3C5.08 2 3 3.92 3 6 1.02 6 0 7.52 0 9c0 1.53 1 3 3 3h3v-1.3H3c-1.62 0-1.7-1.42-1.7-1.7 0-.17.05-1.7 1.7-1.7h1.3V6c0-1.39 1.56-2.7 3.2-2.7 2.55 0 3.13 1.55 3.2 1.8v1.2H12c.81 0 2.7.22 2.7 2.2 0 2.09-2.25 2.2-2.7 2.2h-2V12h2c2.08 0 4-1.16 4-3.5C16 6.06 14.08 5 12 5z"
+				/>
+			</svg>
 		</button>
 	</label>
 </form>
@@ -84,6 +92,13 @@
 
 	label {
 		cursor: pointer;
+	}
+
+	svg {
+		fill: currentColor;
+		width: 100%;
+		height: auto;
+		max-height: 100%;
 	}
 
 	input[type='file'] {

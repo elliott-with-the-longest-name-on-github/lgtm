@@ -1,6 +1,6 @@
-import { db } from '$lib/db';
+import { db } from '#lib/db/index.js';
 import type { InsertResult } from 'kysely';
-import { generateAcronym, loadExistingClassifier } from './utils';
+import { generateAcronym, loadExistingClassifier } from './utils.js';
 
 export async function generateAcronyms(): Promise<void> {
 	const classifier = loadExistingClassifier();

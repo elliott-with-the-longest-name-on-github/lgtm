@@ -1,7 +1,7 @@
 import fs from 'fs';
 
-import { db } from '$lib/db';
-import { loadExistingClassifier } from './utils';
+import { db } from '#lib/db/index.js';
+import { loadExistingClassifier } from './utils.js';
 
 function writeClassifier(classifierJson: string): void {
 	fs.writeFileSync('./src/lib/statistics/classifier.json', classifierJson);

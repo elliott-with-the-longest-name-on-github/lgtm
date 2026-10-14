@@ -1,7 +1,11 @@
+<script lang="ts">
+	import { resolve } from '$app/paths';
+</script>
+
 <div>
 	<h1>success!</h1>
 	<p>you done it</p>
-	<a href="/train">train again</a>
+	<a href={resolve('/train')}>train again</a>
 </div>
 
 <style>

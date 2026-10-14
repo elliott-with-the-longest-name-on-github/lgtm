@@ -1,5 +1,11 @@
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+
+	let { children }: { children: Snippet } = $props();
+</script>
+
 <div class="copy-success-toast">
-	<span class="copy-success-toast-content"><slot /></span>
+	<span class="copy-success-toast-content">{@render children()}</span>
 </div>
 
 <style>

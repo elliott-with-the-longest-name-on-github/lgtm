@@ -1,5 +1,5 @@
 import { sql } from 'kysely';
-import { db } from './db';
+import { db } from './db/index.js';
 
 export interface LGTMResponse {
 	id: string;

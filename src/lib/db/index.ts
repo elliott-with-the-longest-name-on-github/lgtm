@@ -1,7 +1,11 @@
-import { POSTGRES_URL } from '$env/static/private';
-import { createKysely } from '@vercel/postgres-kysely';
+import { POSTGRES_URL } from '$app/env/private';
+import { neon } from '@neondatabase/serverless';
+import { Kysely } from 'kysely';
+import { NeonDialect } from 'kysely-neon';
 import type { Database } from './types.js';
 
-export const db = createKysely<Database>({
-	connectionString: POSTGRES_URL
+export const db = new Kysely<Database>({
+	dialect: new NeonDialect({
+		neon: neon(POSTGRES_URL)
+	})
 });
